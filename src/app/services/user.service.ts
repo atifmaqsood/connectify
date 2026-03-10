@@ -19,13 +19,13 @@ export interface User {
 })
 export class UserService {
   private readonly USER_KEY = 'connectify_user';
-  
+
   user = signal<User>({
     id: '1',
     name: 'John Doe',
     jobTitle: 'Software Developer',
     department: 'Engineering',
-    email: 'john.doe@nku.com',
+    email: 'john.doe@connectify.com',
     phone: '+1 (555) 123-4567',
     location: 'San Francisco, CA',
     joinDate: 'January 2022',

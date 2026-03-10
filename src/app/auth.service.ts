@@ -26,10 +26,10 @@ export interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly TOKEN_KEY = 'nku_token';
+  private readonly TOKEN_KEY = 'connectify_token';
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
-  
+
   isAuthenticated = signal(false);
 
   constructor(private http: HttpClient) {

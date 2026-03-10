@@ -76,7 +76,7 @@ export class SignupComponent {
 
         // Store user data
         localStorage.setItem('connectify_user', JSON.stringify(mockUser));
-        localStorage.setItem('nku_token', 'mock-jwt-token-' + Date.now());
+        localStorage.setItem('connectify_token', 'mock-jwt-token-' + Date.now());
 
         this.loading.set(false);
         this.router.navigate(['/dashboard']);

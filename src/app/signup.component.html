@@ -6,18 +6,18 @@
         <div class="logo-container">
           <mat-icon class="brand-logo">rocket_launch</mat-icon>
         </div>
-        <h1 class="brand-title">NKUverse</h1>
-        <p class="brand-subtitle">Connect with colleagues and build your professional network at NKU Technologies.</p>
+        <h1 class="brand-title">Connectify</h1>
+        <p class="brand-subtitle">Connect with colleagues and build your professional network at Connectify.</p>
       </div>
     </div>
-    
+
     <div class="signup-right">
       <mat-card class="signup-card">
         <mat-card-header class="card-header">
           <mat-card-title>Create a new account</mat-card-title>
           <mat-card-subtitle>It's quick and easy.</mat-card-subtitle>
         </mat-card-header>
-        
+
         <mat-card-content>
           <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="signup-form">
             <div class="name-row">
@@ -28,7 +28,7 @@
                   First name is required
                 </mat-error>
               </mat-form-field>
-              
+
               <mat-form-field appearance="outline" class="half-width">
                 <mat-label>Last name</mat-label>
                 <input matInput formControlName="lastName" required>
@@ -71,7 +71,7 @@
                   Job title is required
                 </mat-error>
               </mat-form-field>
-              
+
               <mat-form-field appearance="outline" class="half-width">
                 <mat-label>Department</mat-label>
                 <mat-select formControlName="department" required>
@@ -89,28 +89,24 @@
             </div>
 
             @if (errorMessage()) {
-              <mat-card class="error-card">
-                <mat-icon class="error-icon">error</mat-icon>
-                {{ errorMessage() }}
-              </mat-card>
+            <mat-card class="error-card">
+              <mat-icon class="error-icon">error</mat-icon>
+              {{ errorMessage() }}
+            </mat-card>
             }
 
-            <button 
-              mat-raised-button 
-              color="primary" 
-              type="submit" 
-              class="signup-btn"
+            <button mat-raised-button color="primary" type="submit" class="signup-btn"
               [disabled]="signupForm.invalid || loading()">
               @if (loading()) {
-                <mat-icon class="spinning">refresh</mat-icon>
-                Creating Account...
+              <mat-icon class="spinning">refresh</mat-icon>
+              Creating Account...
               } @else {
-                Sign Up
+              Sign Up
               }
             </button>
           </form>
         </mat-card-content>
-        
+
         <mat-card-actions class="card-actions">
           <div class="divider">
             <span>Already have an account?</span>

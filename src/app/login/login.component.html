@@ -1,0 +1,99 @@
+<div class="login-page">
+  <div class="particles"></div>
+  <div class="login-container">
+    <div class="login-left">
+      <div class="brand-section">
+        <div class="logo-container">
+          <mat-icon class="brand-logo">rocket_launch</mat-icon>
+        </div>
+        <h1 class="brand-title">NKUverse</h1>
+        <p class="brand-subtitle">Connect with your colleagues and stay updated with company news, events, and discussions in our professional community.</p>
+        <div class="features">
+          <div class="feature">
+            <mat-icon>people</mat-icon>
+            <span>Connect with colleagues</span>
+          </div>
+          <div class="feature">
+            <mat-icon>forum</mat-icon>
+            <span>Share ideas & discussions</span>
+          </div>
+          <div class="feature">
+            <mat-icon>event</mat-icon>
+            <span>Stay updated on events</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="login-right">
+      <mat-card class="login-card">
+        <mat-card-header class="card-header">
+          <mat-card-title>Welcome Back</mat-card-title>
+          <mat-card-subtitle>Sign in to your NKUverse account</mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Email Address</mat-label>
+              <input matInput type="email" formControlName="email" required>
+              <mat-icon matSuffix>email</mat-icon>
+              <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+                Email is required
+              </mat-error>
+              <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+                Please enter a valid email
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Password</mat-label>
+              <input matInput [type]="hidePassword() ? 'password' : 'text'" formControlName="password" required>
+              <button mat-icon-button matSuffix (click)="togglePassword()" type="button">
+                <mat-icon>{{hidePassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+                Password is required
+              </mat-error>
+              <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
+                Password must be at least 6 characters
+              </mat-error>
+            </mat-form-field>
+
+            @if (errorMessage()) {
+              <mat-card class="error-card">
+                <mat-icon class="error-icon">error</mat-icon>
+                {{ errorMessage() }}
+              </mat-card>
+            }
+
+            <button 
+              mat-raised-button 
+              color="primary" 
+              type="submit" 
+              class="login-btn"
+              [disabled]="loginForm.invalid || loading()">
+              @if (loading()) {
+                <mat-icon class="spinning">refresh</mat-icon>
+                Signing in...
+              } @else {
+                <mat-icon>login</mat-icon>
+                Sign In
+              }
+            </button>
+          </form>
+        </mat-card-content>
+        
+        <mat-card-actions class="card-actions">
+          <div class="divider">
+            <span>Don't have an account?</span>
+          </div>
+          <button mat-button color="accent" class="forgot-btn" routerLink="/auth/signup">
+            <mat-icon>person_add</mat-icon>
+            Create New Account
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

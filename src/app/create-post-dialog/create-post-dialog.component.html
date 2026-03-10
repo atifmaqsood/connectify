@@ -1,0 +1,65 @@
+<div class="create-post-dialog">
+  <div class="dialog-header">
+    <h2>Create Post</h2>
+    <button mat-icon-button mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  
+  <div class="user-info">
+    <img [src]="user().profilePhoto" class="avatar-img" alt="Profile">
+    <div class="user-details">
+      <span class="name">{{ user().name }}</span>
+      <span class="visibility">🌐 Public</span>
+    </div>
+  </div>
+
+  <form [formGroup]="postForm" class="post-form">
+    <textarea 
+      formControlName="content" 
+      placeholder="What's on your mind, {{ user().name.split(' ')[0] }}?"
+      class="post-textarea"></textarea>
+    
+    @if (selectedImage()) {
+      <div class="image-preview">
+        <img [src]="selectedImage()" alt="Preview">
+        <button type="button" mat-icon-button class="remove-image" (click)="removeImage()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    }
+    
+    <div class="media-options">
+      <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*,video/*" style="display: none;">
+      <button type="button" mat-button class="media-btn" (click)="fileInput.click()">
+        <mat-icon style="color: #45bd62;">photo_library</mat-icon>
+        Photo/Video
+      </button>
+      <button type="button" mat-button class="media-btn" [matMenuTriggerFor]="feelingMenu">
+        <mat-icon style="color: #f7b928;">sentiment_satisfied</mat-icon>
+        Feeling/Activity
+      </button>
+      <mat-menu #feelingMenu="matMenu" class="feeling-menu">
+        @for (feeling of feelings; track feeling.text) {
+          <button mat-menu-item (click)="selectFeeling(feeling)">
+            <span class="feeling-emoji">{{ feeling.emoji }}</span>
+            <span>{{ feeling.text }}</span>
+          </button>
+        }
+      </mat-menu>
+    </div>
+  </form>
+
+  <div class="dialog-actions">
+    <button mat-raised-button color="primary" class="post-btn" [disabled]="!postForm.get('content')?.value || loading()" (click)="submitPost()">
+      @if (loading()) {
+        <div class="btn-loader">
+          <div class="btn-spinner"></div>
+          Posting...
+        </div>
+      } @else {
+        Post
+      }
+    </button>
+  </div>
+</div>

@@ -1,0 +1,296 @@
+<!-- Normal Dialog View -->
+@if (!isImageFullscreen()) {
+  <div class="comments-dialog">
+    <div class="dialog-header">
+      <h2>{{ data.author }}'s Post</h2>
+      <div class="header-actions">
+        <button mat-icon-button [matMenuTriggerFor]="postMenu">
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+        <mat-menu #postMenu="matMenu">
+          <button mat-menu-item (click)="editPost()">
+            <mat-icon>edit</mat-icon>
+            <span>Edit Post</span>
+          </button>
+          <button mat-menu-item (click)="deletePost()">
+            <mat-icon>delete</mat-icon>
+            <span>Delete Post</span>
+          </button>
+        </mat-menu>
+        <button mat-icon-button mat-dialog-close>
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="post-content">
+      <div class="post-header">
+        @if (data.author === getCurrentUserName()) {
+          <img [src]="getCurrentUserPhoto()" class="profile-avatar-img" alt="Profile">
+        } @else {
+          <div class="profile-avatar">{{ data.author.charAt(0) }}</div>
+        }
+        <div class="post-info">
+          <span class="author-name">{{ data.author }}</span>
+          <span class="post-time">{{ data.timestamp | date:'short' }}</span>
+        </div>
+      </div>
+      <p class="post-text">{{ data.content }}</p>
+      @if (data.image) {
+        <div class="image-container">
+          <img [src]="data.image" class="post-image" alt="Post image" (click)="toggleImageFullscreen()">
+          <button mat-icon-button class="fullscreen-btn" (click)="toggleImageFullscreen()">
+            <mat-icon>fullscreen</mat-icon>
+          </button>
+        </div>
+      }
+      
+      <div class="post-actions">
+        <div class="action-stats">
+          <span class="likes-count">{{ data.likes }} likes</span>
+          <span class="comments-count">{{ comments().length }} comments</span>
+        </div>
+        <div class="action-buttons">
+          <button mat-button [class.liked]="data.liked" (click)="togglePostLike()" class="action-button">
+            <mat-icon>{{ data.liked ? 'thumb_up' : 'thumb_up_off_alt' }}</mat-icon>
+            Like
+          </button>
+          <button mat-button class="action-button">
+            <mat-icon>comment</mat-icon>
+            Comment
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="comments-section">
+      <div class="comments-header">
+        <span class="comments-count">{{ comments().length }} Comments</span>
+      </div>
+
+      <div class="comments-list">
+        @for (comment of comments(); track comment.id) {
+          <div class="comment-item">
+            @if (comment.author === getCurrentUserName()) {
+              <img [src]="getCurrentUserPhoto()" class="comment-avatar-img" alt="Profile">
+            } @else {
+              <div class="comment-avatar">{{ comment.author.charAt(0) }}</div>
+            }
+            <div class="comment-content">
+              <div class="comment-bubble">
+                <span class="comment-author">{{ comment.author }}</span>
+                <p class="comment-text">{{ comment.text }}</p>
+              </div>
+              <div class="comment-actions">
+                <button class="comment-action-btn" (click)="toggleCommentLike(comment)" [style.color]="comment.liked ? '#1877f2' : '#65676b'">
+                  {{ comment.liked ? '👍' : 'Like' }}
+                </button>
+                <button class="comment-action-btn" (click)="toggleReply(comment.id)">
+                  Reply
+                </button>
+                <span class="comment-time">{{ comment.timestamp | date:'short' }}</span>
+                @if (comment.likes > 0) {
+                  <span class="comment-likes">👍 {{ comment.likes }}</span>
+                }
+              </div>
+              
+              @if (comment.showReply) {
+                <div class="reply-form">
+                  <img [src]="getCurrentUserPhoto()" class="comment-avatar-img small" alt="Profile">
+                  <div class="reply-input-form">
+                    <input #replyText placeholder="Write a reply..." class="reply-input">
+                    <button type="button" mat-icon-button (click)="addReply(comment.id, replyText.value); replyText.value = ''">
+                      <mat-icon>send</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              }
+              
+              @if (comment.replies && comment.replies.length > 0) {
+                <div class="replies">
+                  @for (reply of comment.replies; track reply.id) {
+                    <div class="reply-item">
+                      @if (reply.author === getCurrentUserName()) {
+                        <img [src]="getCurrentUserPhoto()" class="comment-avatar-img small" alt="Profile">
+                      } @else {
+                        <div class="comment-avatar small">{{ reply.author.charAt(0) }}</div>
+                      }
+                      <div class="reply-content">
+                        <div class="comment-bubble">
+                          <span class="comment-author">{{ reply.author }}</span>
+                          <p class="comment-text">{{ reply.text }}</p>
+                        </div>
+                        <div class="comment-actions">
+                          <button class="comment-action-btn" (click)="toggleCommentLike(reply)" [style.color]="reply.liked ? '#1877f2' : '#65676b'">
+                            {{ reply.liked ? '👍' : 'Like' }}
+                          </button>
+                          <button class="comment-action-btn" (click)="toggleReply(reply.id)">
+                            Reply
+                          </button>
+                          <span class="comment-time">{{ reply.timestamp | date:'short' }}</span>
+                          @if (reply.likes > 0) {
+                            <span class="comment-likes">👍 {{ reply.likes }}</span>
+                          }
+                        </div>
+                        
+                        @if (reply.showReply) {
+                          <div class="reply-form nested">
+                            <img [src]="getCurrentUserPhoto()" class="comment-avatar-img small" alt="Profile">
+                            <div class="reply-input-form">
+                              <input #nestedReplyText placeholder="Write a reply..." class="reply-input">
+                              <button type="button" mat-icon-button (click)="addReply(reply.id, nestedReplyText.value); nestedReplyText.value = ''">
+                                <mat-icon>send</mat-icon>
+                              </button>
+                            </div>
+                          </div>
+                        }
+                        
+                        @if (reply.replies && reply.replies.length > 0) {
+                          <div class="nested-replies">
+                            @for (nestedReply of reply.replies; track nestedReply.id) {
+                              <div class="reply-item">
+                                @if (nestedReply.author === getCurrentUserName()) {
+                                  <img [src]="getCurrentUserPhoto()" class="comment-avatar-img small" alt="Profile">
+                                } @else {
+                                  <div class="comment-avatar small">{{ nestedReply.author.charAt(0) }}</div>
+                                }
+                                <div class="reply-content">
+                                  <div class="comment-bubble">
+                                    <span class="comment-author">{{ nestedReply.author }}</span>
+                                    <p class="comment-text">{{ nestedReply.text }}</p>
+                                  </div>
+                                  <div class="comment-actions">
+                                    <button class="comment-action-btn" (click)="toggleCommentLike(nestedReply)" [style.color]="nestedReply.liked ? '#1877f2' : '#65676b'">
+                                      {{ nestedReply.liked ? '👍' : 'Like' }}
+                                    </button>
+                                    <span class="comment-time">{{ nestedReply.timestamp | date:'short' }}</span>
+                                    @if (nestedReply.likes > 0) {
+                                      <span class="comment-likes">👍 {{ nestedReply.likes }}</span>
+                                    }
+                                  </div>
+                                </div>
+                              </div>
+                            }
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="add-comment">
+        <img [src]="getCurrentUserPhoto()" class="comment-avatar-img" alt="Profile">
+        <form [formGroup]="commentForm" (ngSubmit)="addComment()" class="comment-form">
+          <input 
+            formControlName="text" 
+            placeholder="Write a comment..."
+            class="comment-input">
+          <button type="submit" mat-icon-button [disabled]="!commentForm.get('text')?.value">
+            <mat-icon>send</mat-icon>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Fullscreen Image with Comments -->
+@if (isImageFullscreen() && data.image) {
+  <div class="fullscreen-view">
+    <div class="fullscreen-header">
+      <button mat-icon-button (click)="closeFullscreen()" class="back-btn">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h3>{{ data.author }}'s Post</h3>
+      <div class="fullscreen-actions">
+        <button mat-icon-button [matMenuTriggerFor]="fullscreenMenu">
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+        <mat-menu #fullscreenMenu="matMenu">
+          <button mat-menu-item (click)="editPost()">
+            <mat-icon>edit</mat-icon>
+            <span>Edit Post</span>
+          </button>
+          <button mat-menu-item (click)="deletePost()">
+            <mat-icon>delete</mat-icon>
+            <span>Delete Post</span>
+          </button>
+        </mat-menu>
+        <button mat-icon-button mat-dialog-close>
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+    
+    <div class="fullscreen-content">
+      <div class="image-section">
+        <img [src]="data.image" class="fullscreen-image" alt="Post image">
+      </div>
+      
+      <div class="comments-sidebar">
+        <div class="post-info-header">
+          @if (data.author === getCurrentUserName()) {
+            <img [src]="getCurrentUserPhoto()" class="profile-avatar-img" alt="Profile">
+          } @else {
+            <div class="profile-avatar">{{ data.author.charAt(0) }}</div>
+          }
+          <div class="post-details">
+            <span class="author-name">{{ data.author }}</span>
+            <span class="post-time">{{ data.timestamp | date:'short' }}</span>
+          </div>
+        </div>
+        
+        <div class="post-caption">
+          <p>{{ data.content }}</p>
+        </div>
+        
+        <div class="sidebar-comments">
+          <div class="comments-list">
+            @for (comment of comments(); track comment.id) {
+              <div class="comment-item">
+                @if (comment.author === getCurrentUserName()) {
+                  <img [src]="getCurrentUserPhoto()" class="comment-avatar-img small" alt="Profile">
+                } @else {
+                  <div class="comment-avatar small">{{ comment.author.charAt(0) }}</div>
+                }
+                <div class="comment-content">
+                  <div class="comment-bubble">
+                    <span class="comment-author">{{ comment.author }}</span>
+                    <p class="comment-text">{{ comment.text }}</p>
+                  </div>
+                  <div class="comment-actions">
+                    <button class="comment-action-btn" (click)="toggleCommentLike(comment)" [style.color]="comment.liked ? '#1877f2' : '#65676b'">
+                      {{ comment.liked ? '👍' : 'Like' }}
+                    </button>
+                    <button class="comment-action-btn" (click)="toggleReply(comment.id)">
+                      Reply
+                    </button>
+                    <span class="comment-time">{{ comment.timestamp | date:'short' }}</span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+          
+          <div class="add-comment">
+            <img [src]="getCurrentUserPhoto()" class="comment-avatar-img small" alt="Profile">
+            <form [formGroup]="commentForm" (ngSubmit)="addComment()" class="comment-form">
+              <input 
+                formControlName="text" 
+                placeholder="Add a comment..."
+                class="comment-input">
+              <button type="submit" mat-icon-button [disabled]="!commentForm.get('text')?.value">
+                <mat-icon>send</mat-icon>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

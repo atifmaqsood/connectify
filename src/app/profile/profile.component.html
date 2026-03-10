@@ -1,0 +1,105 @@
+<div class="profile-container">
+  <app-navbar></app-navbar>
+  
+  <div class="profile-content">
+    <!-- Cover Photo Section -->
+    <div class="cover-section">
+      <div class="cover-photo">
+        <img [src]="user().coverPhoto" alt="Cover photo" class="cover-image">
+        <button mat-icon-button class="edit-cover-btn" (click)="triggerCoverUpload()">
+          <mat-icon>photo_camera</mat-icon>
+        </button>
+      </div>
+
+      
+      <div class="profile-header">
+        <div class="profile-info">
+          <div class="profile-photo-container">
+            <img [src]="user().profilePhoto" alt="Profile photo" class="profile-photo">
+            <button mat-icon-button class="edit-profile-btn" (click)="triggerProfileUpload()">
+              <mat-icon>photo_camera</mat-icon>
+            </button>
+          </div>
+          
+          <div class="user-details">
+            <h1 class="user-name">{{ user().name }}</h1>
+            <p class="user-title">{{ user().jobTitle }} at {{ user().department }}</p>
+            <div class="user-stats">
+              <span class="stat">{{ stats.posts }} posts</span>
+              <span class="stat">{{ stats.followers }} followers</span>
+              <span class="stat">{{ stats.following }} following</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="profile-actions">
+          <button mat-raised-button color="primary" (click)="editProfile()">
+            <mat-icon>edit</mat-icon>
+            Edit Profile
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Navigation -->
+    <div class="profile-nav">
+      <mat-tab-group>
+        <mat-tab label="Posts">
+          <div class="tab-content">
+            <div class="posts-section">
+              <app-feed></app-feed>
+            </div>
+          </div>
+        </mat-tab>
+        
+        <mat-tab label="About">
+          <div class="tab-content">
+            <mat-card class="info-card">
+              <mat-card-header>
+                <mat-card-title>Contact Information</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="info-item">
+                  <mat-icon>email</mat-icon>
+                  <span>{{ user().email }}</span>
+                </div>
+                <div class="info-item">
+                  <mat-icon>phone</mat-icon>
+                  <span>{{ user().phone }}</span>
+                </div>
+                <div class="info-item">
+                  <mat-icon>location_on</mat-icon>
+                  <span>{{ user().location }}</span>
+                </div>
+                <div class="info-item">
+                  <mat-icon>work</mat-icon>
+                  <span>{{ user().jobTitle }} - {{ user().department }}</span>
+                </div>
+                <div class="info-item">
+                  <mat-icon>calendar_today</mat-icon>
+                  <span>Joined {{ user().joinDate }}</span>
+                </div>
+                @if (user().bio) {
+                  <div class="info-item">
+                    <mat-icon>info</mat-icon>
+                    <span>{{ user().bio }}</span>
+                  </div>
+                }
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </mat-tab>
+        
+        <mat-tab label="Photos">
+          <div class="tab-content">
+            <div class="photos-grid">
+              <div class="photo-item" *ngFor="let i of [1,2,3,4,5,6]">
+                <img [src]="'https://via.placeholder.com/200x200'" alt="Photo">
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>

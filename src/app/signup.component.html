@@ -1,0 +1,126 @@
+<div class="signup-page">
+  <div class="particles"></div>
+  <div class="signup-container">
+    <div class="signup-left">
+      <div class="brand-section">
+        <div class="logo-container">
+          <mat-icon class="brand-logo">rocket_launch</mat-icon>
+        </div>
+        <h1 class="brand-title">NKUverse</h1>
+        <p class="brand-subtitle">Connect with colleagues and build your professional network at NKU Technologies.</p>
+      </div>
+    </div>
+    
+    <div class="signup-right">
+      <mat-card class="signup-card">
+        <mat-card-header class="card-header">
+          <mat-card-title>Create a new account</mat-card-title>
+          <mat-card-subtitle>It's quick and easy.</mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="signup-form">
+            <div class="name-row">
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>First name</mat-label>
+                <input matInput formControlName="firstName" required>
+                <mat-error *ngIf="signupForm.get('firstName')?.hasError('required')">
+                  First name is required
+                </mat-error>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>Last name</mat-label>
+                <input matInput formControlName="lastName" required>
+                <mat-error *ngIf="signupForm.get('lastName')?.hasError('required')">
+                  Last name is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Email address</mat-label>
+              <input matInput type="email" formControlName="email" required>
+              <mat-error *ngIf="signupForm.get('email')?.hasError('required')">
+                Email is required
+              </mat-error>
+              <mat-error *ngIf="signupForm.get('email')?.hasError('email')">
+                Please enter a valid email
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Password</mat-label>
+              <input matInput [type]="hidePassword() ? 'password' : 'text'" formControlName="password" required>
+              <button mat-icon-button matSuffix (click)="togglePassword()" type="button">
+                <mat-icon>{{hidePassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-error *ngIf="signupForm.get('password')?.hasError('required')">
+                Password is required
+              </mat-error>
+              <mat-error *ngIf="signupForm.get('password')?.hasError('minlength')">
+                Password must be at least 6 characters
+              </mat-error>
+            </mat-form-field>
+
+            <div class="department-row">
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>Job Title</mat-label>
+                <input matInput formControlName="jobTitle" required>
+                <mat-error *ngIf="signupForm.get('jobTitle')?.hasError('required')">
+                  Job title is required
+                </mat-error>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>Department</mat-label>
+                <mat-select formControlName="department" required>
+                  <mat-option value="Engineering">Engineering</mat-option>
+                  <mat-option value="Marketing">Marketing</mat-option>
+                  <mat-option value="Sales">Sales</mat-option>
+                  <mat-option value="HR">Human Resources</mat-option>
+                  <mat-option value="Finance">Finance</mat-option>
+                  <mat-option value="Operations">Operations</mat-option>
+                </mat-select>
+                <mat-error *ngIf="signupForm.get('department')?.hasError('required')">
+                  Department is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            @if (errorMessage()) {
+              <mat-card class="error-card">
+                <mat-icon class="error-icon">error</mat-icon>
+                {{ errorMessage() }}
+              </mat-card>
+            }
+
+            <button 
+              mat-raised-button 
+              color="primary" 
+              type="submit" 
+              class="signup-btn"
+              [disabled]="signupForm.invalid || loading()">
+              @if (loading()) {
+                <mat-icon class="spinning">refresh</mat-icon>
+                Creating Account...
+              } @else {
+                Sign Up
+              }
+            </button>
+          </form>
+        </mat-card-content>
+        
+        <mat-card-actions class="card-actions">
+          <div class="divider">
+            <span>Already have an account?</span>
+          </div>
+          <button mat-button color="accent" class="login-btn" routerLink="/auth/login">
+            <mat-icon>login</mat-icon>
+            Sign In
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

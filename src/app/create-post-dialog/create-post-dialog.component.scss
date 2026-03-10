@@ -1,0 +1,177 @@
+.create-post-dialog {
+  width: 100%;
+  max-width: 700px;
+  min-width: min(700px, 90vw);
+  padding: 0;
+  
+  @media (max-width: 768px) {
+    min-width: 95vw;
+    max-width: 95vw;
+  }
+}
+::ng-deep   .mat-mdc-dialog-surface{
+overflow-x: hidden;  }
+:host ::ng-deep .mat-mdc-dialog-container {
+  width: 100%;
+  max-width: 700px;
+  min-width: min(700px, 90vw);
+  
+  @media (max-width: 768px) {
+    min-width: 95vw;
+    max-width: 95vw;
+  }
+
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e4e6ea;
+}
+
+.dialog-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  gap: 12px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #1877f2;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.avatar-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.visibility {
+  font-size: 13px;
+  color: #65676b;
+}
+
+.post-textarea {
+  width: 100%;
+  min-height: 120px;
+  border: none;
+  outline: none;
+  font-size: 24px;
+  font-family: inherit;
+  resize: none;
+  padding: 0 20px;
+  background: transparent;
+}
+
+.post-textarea::placeholder {
+  color: #65676b;
+}
+
+.media-options {
+  padding: 16px 20px;
+  border-top: 1px solid #e4e6ea;
+  display: flex;
+  gap: 8px;
+}
+
+.media-btn {
+  flex: 1;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.dialog-actions {
+  padding: 16px 20px;
+  border-top: 1px solid #e4e6ea;
+}
+
+.post-btn {
+  width: 100%;
+  height: 36px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.image-preview {
+  position: relative;
+  margin: 12px 20px;
+}
+
+.image-preview img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.remove-image {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0,0,0,0.6) !important;
+  color: white !important;
+}
+
+.btn-loader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+::ng-deep .feeling-menu {
+  .mat-mdc-menu-content {
+    padding: 8px 0;
+  }
+  
+  .mat-mdc-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    
+    .feeling-emoji {
+      font-size: 18px;
+    }
+  }
+}

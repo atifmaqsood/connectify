@@ -1,0 +1,57 @@
+<div class="sidebar-container">
+  <!-- Quick Actions Card -->
+  <mat-card class="sidebar-card">
+    <mat-card-header>
+      <mat-card-title class="card-title">Quick Actions</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      @for (action of quickActions(); track action.action) {
+        <button mat-button class="action-item">
+          <mat-icon>{{ action.icon }}</mat-icon>
+          <span>{{ action.label }}</span>
+        </button>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Online Colleagues Card -->
+  <mat-card class="sidebar-card">
+    <mat-card-header>
+      <mat-card-title class="card-title">Online Colleagues</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      @for (colleague of onlineColleagues(); track colleague.id) {
+        <div class="colleague-item">
+          <mat-icon class="colleague-avatar">account_circle</mat-icon>
+          <span class="colleague-name">{{ colleague.name }}</span>
+          <div class="online-indicator"></div>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Trending Topics Card -->
+  <mat-card class="sidebar-card">
+    <mat-card-header>
+      <mat-card-title class="card-title">Trending Topics</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="trending-item">
+        <span class="trending-tag">#TechInnovation</span>
+        <span class="trending-count">245 posts</span>
+      </div>
+      <div class="trending-item">
+        <span class="trending-tag">#TeamWork</span>
+        <span class="trending-count">189 posts</span>
+      </div>
+      <div class="trending-item">
+        <span class="trending-tag">#NKUTech</span>
+        <span class="trending-count">156 posts</span>
+      </div>
+      <div class="trending-item">
+        <span class="trending-tag">#ProjectUpdate</span>
+        <span class="trending-count">98 posts</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,173 @@
+.navbar {
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 64px;
+}
+
+.navbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px;
+  height: 100%;
+  
+  @media (max-width: 768px) {
+    padding: 0 8px;
+  }
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.mobile-menu-btn {
+  display: none;
+  
+  @media (max-width: 768px) {
+    display: block;
+  }
+}
+
+.logo {
+  color: #1976d2;
+  font-weight: bold;
+  font-size: 24px;
+  margin: 0;
+  cursor: pointer;
+  
+  @media (max-width: 480px) {
+    font-size: 20px;
+  }
+}
+
+.navbar-center {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  flex: 1;
+  
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.nav-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  
+  &.active {
+    background-color: #e3f2fd;
+    color: #1976d2;
+  }
+  
+  &:hover {
+    background-color: #f5f5f5;
+  }
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.search-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #f0f2f5;
+  
+  &:hover {
+    background-color: #e4e6ea;
+  }
+}
+
+.mobile-notifications,
+.mobile-messages {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #f0f2f5;
+  
+  &:hover {
+    background-color: #e4e6ea;
+  }
+  
+  @media (max-width: 768px) {
+    display: block;
+  }
+}
+
+.user-menu {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  
+  mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+}
+
+// Search Mode Styles
+.search-mode {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+}
+
+.back-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  
+  &:hover {
+    background-color: #f0f2f5;
+  }
+}
+
+.search-input-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background-color: #f0f2f5;
+  border-radius: 20px;
+  padding: 8px 16px;
+  gap: 8px;
+  
+  .search-icon {
+    color: #65676b;
+    font-size: 20px;
+  }
+  
+  .search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 15px;
+    color: #050505;
+    
+    &::placeholder {
+      color: #65676b;
+    }
+  }
+}

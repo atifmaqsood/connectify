@@ -1,0 +1,15 @@
+<div class="marketplace-container">
+    <div class="header">
+        <h2>Marketplace</h2>
+    </div>
+    <div class="products-grid">
+        <mat-card class="product-card" *ngFor="let product of products()">
+            <img mat-card-image [src]="product.thumbnail" [alt]="product.title">
+            <mat-card-content>
+                <div class="price">${{ product.price }}</div>
+                <div class="title">{{ product.title }}</div>
+                <div class="location">{{ product.category }}</div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

@@ -29,7 +29,9 @@ import { UserService } from '../services/user.service';
 export class FeedComponent {
   posts;
   user;
-  loadingPosts = signal<Set<string>>(new Set());
+  loadingLikes = signal<Set<string>>(new Set());
+  hasMorePosts;
+  loadingMore;
 
   constructor(
     private dialog: MatDialog,
@@ -38,6 +40,12 @@ export class FeedComponent {
   ) {
     this.posts = this.postService.posts;
     this.user = this.userService.user;
+    this.hasMorePosts = this.postService.hasMorePosts;
+    this.loadingMore = this.postService.loadingPosts;
+  }
+
+  loadMore(): void {
+    this.postService.loadMoreFakePosts();
   }
 
   openCreatePost(): void {
@@ -55,15 +63,15 @@ export class FeedComponent {
   }
 
   toggleLike(post: any): void {
-    const currentLoading = this.loadingPosts();
+    const currentLoading = this.loadingLikes();
     currentLoading.add(post.id);
-    this.loadingPosts.set(new Set(currentLoading));
-    
+    this.loadingLikes.set(new Set(currentLoading));
+
     setTimeout(() => {
       this.postService.toggleLike(post.id);
-      const updatedLoading = this.loadingPosts();
+      const updatedLoading = this.loadingLikes();
       updatedLoading.delete(post.id);
-      this.loadingPosts.set(new Set(updatedLoading));
+      this.loadingLikes.set(new Set(updatedLoading));
     }, 500);
   }
 

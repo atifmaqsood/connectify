@@ -1,10 +1,14 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './auth.guard';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { PostsComponent } from './posts/posts.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup.component';
+import { FeedComponent } from './feed/feed.component';
+import { MarketplaceComponent } from './marketplace/marketplace';
+import { VidsComponent } from './vids/vids';
+import { GroupsComponent } from './groups/groups';
+import { GamingComponent } from './gaming/gaming';
 import { ProfileComponent } from './profile/profile.component';
+import { ShellComponent } from './shell/shell';
 
 export const routes: Routes = [
   {
@@ -21,19 +25,35 @@ export const routes: Routes = [
     component: SignupComponent
   },
   {
-    path: 'dashboard',
-    component: DashboardComponent,
-    canActivate: [authGuard]
-  },
-  {
-    path: 'posts',
-    component: PostsComponent,
-    canActivate: [authGuard]
-  },
-  {
-    path: 'profile',
-    component: ProfileComponent,
-    canActivate: [authGuard]
+    path: '',
+    component: ShellComponent,
+    canActivate: [authGuard],
+    children: [
+      {
+        path: 'dashboard',
+        component: FeedComponent
+      },
+      {
+        path: 'videos',
+        component: VidsComponent
+      },
+      {
+        path: 'marketplace',
+        component: MarketplaceComponent
+      },
+      {
+        path: 'groups',
+        component: GroupsComponent
+      },
+      {
+        path: 'gaming',
+        component: GamingComponent
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent
+      }
+    ]
   },
   {
     path: '**',

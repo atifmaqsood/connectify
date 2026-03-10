@@ -1,0 +1,48 @@
+.shell-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    background-color: var(--bg-color);
+    transition: background-color 0.3s ease;
+}
+
+.main-layout {
+    display: grid;
+    grid-template-columns: 360px 1fr 360px;
+    flex: 1;
+    padding-top: 64px; // Navbar height
+    overflow: hidden;
+
+    @media (max-width: 1200px) {
+        grid-template-columns: 280px 1fr 0px;
+
+        .right-sidebar {
+            display: none;
+        }
+    }
+
+    @media (max-width: 900px) {
+        grid-template-columns: 0px 1fr 0px;
+
+        .left-sidebar {
+            display: none;
+        }
+    }
+}
+
+.left-sidebar,
+.right-sidebar {
+    overflow-y: auto;
+    height: calc(100vh - 64px);
+    position: sticky;
+    top: 64px;
+}
+
+.center-content {
+    overflow-y: auto;
+    height: calc(100vh - 64px);
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+}

@@ -1,6 +1,7 @@
 .profile-container {
   min-height: 100vh;
-  background: #f0f2f5;
+  background: var(--bg-color);
+  transition: background 0.3s ease;
 }
 
 .profile-content {
@@ -10,32 +11,33 @@
 }
 
 .cover-section {
-  background: white;
+  background: var(--surface-color);
   border-radius: 0 0 8px 8px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
 }
 
 .cover-photo {
   position: relative;
   height: 400px;
   overflow: hidden;
-  
+
   .cover-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-  
+
   .edit-cover-btn {
     position: absolute;
     bottom: 16px;
     right: 16px;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0, 0, 0, 0.6);
     color: white;
-    
+
     &:hover {
-      background: rgba(0,0,0,0.8);
+      background: rgba(0, 0, 0, 0.8);
     }
   }
 }
@@ -45,7 +47,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  
+
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
@@ -57,7 +59,7 @@
   display: flex;
   align-items: flex-end;
   gap: 24px;
-  
+
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
@@ -68,53 +70,54 @@
 .profile-photo-container {
   position: relative;
   margin-top: -80px;
-  
+
   .profile-photo {
     width: 160px;
     height: 160px;
     border-radius: 50%;
-    border: 4px solid white;
+    border: 4px solid var(--surface-color);
     object-fit: cover;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
-  
+
   .edit-profile-btn {
     position: absolute;
     bottom: 8px;
     right: 8px;
-    background: #f0f2f5;
+    background: var(--bg-color);
     width: 36px;
     height: 36px;
-    
+    color: var(--text-primary);
+
     &:hover {
-      background: #e4e6ea;
+      background: var(--hover-color);
     }
   }
 }
 
 .user-details {
   margin-bottom: 8px;
-  
+
   .user-name {
     font-size: 32px;
     font-weight: 700;
     margin: 0 0 4px 0;
-    color: #1c1e21;
+    color: var(--text-primary);
   }
-  
+
   .user-title {
     font-size: 16px;
-    color: #65676b;
+    color: var(--text-secondary);
     margin: 0 0 8px 0;
   }
-  
+
   .user-stats {
     display: flex;
     gap: 16px;
-    
+
     .stat {
       font-size: 14px;
-      color: #65676b;
+      color: var(--text-secondary);
       font-weight: 600;
     }
   }
@@ -128,17 +131,26 @@
 
 .profile-nav {
   margin-top: 16px;
-  background: white;
+  background: var(--surface-color);
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+
   ::ng-deep .mat-mdc-tab-group {
     .mat-mdc-tab-header {
-      border-bottom: 1px solid #e4e6ea;
+      border-bottom: 1px solid var(--divider-color);
     }
-    
+
     .mat-mdc-tab {
       min-width: 120px;
+
+      .mdc-tab__text-label {
+        color: var(--text-secondary);
+      }
+
+      &.mdc-tab--active .mdc-tab__text-label {
+        color: var(--accent-color);
+      }
     }
   }
 }
@@ -156,28 +168,28 @@
 .info-card {
   max-width: 600px;
   margin: 0 auto;
-  
+
   .info-item {
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 12px 0;
-    border-bottom: 1px solid #f0f2f5;
-    
+    border-bottom: 1px solid var(--divider-color);
+
     &:last-child {
       border-bottom: none;
     }
-    
+
     mat-icon {
-      color: #65676b;
+      color: var(--text-secondary);
       width: 20px;
       height: 20px;
       font-size: 20px;
     }
-    
+
     span {
       font-size: 15px;
-      color: #1c1e21;
+      color: var(--text-primary);
     }
   }
 }
@@ -188,18 +200,19 @@
   gap: 16px;
   max-width: 800px;
   margin: 0 auto;
-  
+
   .photo-item {
     aspect-ratio: 1;
     border-radius: 8px;
     overflow: hidden;
     cursor: pointer;
-    
+    border: 1px solid var(--border-color);
+
     &:hover {
       transform: scale(1.02);
       transition: transform 0.2s ease;
     }
-    
+
     img {
       width: 100%;
       height: 100%;

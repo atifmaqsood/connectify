@@ -14,6 +14,7 @@ export interface Comment {
 export interface Post {
   id: string;
   author: string;
+  authorImage?: string;
   content: string;
   timestamp: Date;
   likes: number;
@@ -29,11 +30,22 @@ export interface Post {
 export class PostService {
   private readonly STORAGE_KEY = 'connectify_posts';
   private readonly COMMENTS_KEY = 'connectify_comments';
-  
+
   posts = signal<Post[]>([]);
+
+  private userMap = new Map<number, { name: string, image: string }>();
+  private maxSkip = 500;
+
+  // Expose pagination state
+  hasMorePosts = signal<boolean>(true);
+  loadingPosts = signal<boolean>(false);
+  private currentSkip = 0;
 
   constructor() {
     this.loadPosts();
+    this.preloadUsers().then(() => {
+      this.loadFakePosts(0, 50);
+    });
     // Listen for user updates
     if (typeof window !== 'undefined') {
       window.addEventListener('userUpdated', () => {
@@ -46,74 +58,106 @@ export class PostService {
     const storedPosts = localStorage.getItem(this.STORAGE_KEY);
     if (storedPosts) {
       try {
-        const posts = JSON.parse(storedPosts).map((post: any) => ({
-          ...post,
-          timestamp: new Date(post.timestamp),
-          postComments: post.postComments || []
-        }));
+        const posts = JSON.parse(storedPosts)
+          .map((post: any) => ({
+            ...post,
+            timestamp: new Date(post.timestamp),
+            postComments: post.postComments || []
+          }))
+          .filter((post: any) => {
+            const author = post.author || '';
+            // Strictly filter out unwanted names
+            return !author.startsWith('User ') &&
+              author !== 'Mike Chen' &&
+              author !== 'Emily Davis' &&
+              author !== 'John Doe';
+          });
         this.posts.set(posts);
+        // Save back filtered list to keep it clean
+        this.savePosts();
       } catch (error) {
-        // If parsing fails or structure is invalid, reinitialize
-        this.initializeDefaultPosts();
+        this.posts.set([]);
       }
-    } else {
-      this.initializeDefaultPosts();
     }
   }
 
-  private initializeDefaultPosts(): void {
-    const userName = typeof window !== 'undefined' && localStorage.getItem('connectify_user') 
-      ? JSON.parse(localStorage.getItem('connectify_user')!).name 
-      : 'John Doe';
-    
-    const defaultPosts: Post[] = [
-      {
-        id: '1',
-        author: userName,
-        content: 'Excited to share that our team just completed the Q4 project ahead of schedule! 🎉 Great collaboration everyone!',
-        timestamp: new Date(),
-        likes: 24,
-        comments: 8,
-        liked: false,
-        image: 'https://via.placeholder.com/500x300',
-        postComments: []
-      },
-      {
-        id: '2',
-        author: 'Mike Chen',
-        content: 'Looking forward to the upcoming tech conference next week. Who else is attending? Let\'s connect!',
-        timestamp: new Date(Date.now() - 3600000),
-        likes: 15,
-        comments: 5,
-        liked: true,
-        postComments: []
-      },
-      {
-        id: '3',
-        author: 'Emily Davis',
-        content: 'Just finished an amazing workshop on AI and Machine Learning. The future of technology is so exciting! 🤖',
-        timestamp: new Date(Date.now() - 7200000),
-        likes: 32,
-        comments: 12,
-        liked: false,
-        image: 'https://via.placeholder.com/500x250',
-        postComments: []
+  private async preloadUsers(): Promise<void> {
+    try {
+      // DummyJSON has 208 max users, we fetch a large batch to cache proper names and avatars
+      const response = await fetch('https://dummyjson.com/users?limit=200&select=firstName,lastName,image');
+      const data = await response.json();
+      for (const user of data.users) {
+        this.userMap.set(user.id, {
+          name: `${user.firstName} ${user.lastName}`,
+          image: user.image
+        });
       }
-    ];
-    this.posts.set(defaultPosts);
-    this.savePosts();
+    } catch (error) {
+      console.error('Failed to preload users:', error);
+    }
   }
 
-  private savePosts(): void {
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.posts()));
+  async loadMoreFakePosts(): Promise<void> {
+    if (!this.hasMorePosts() || this.loadingPosts()) return;
+    await this.loadFakePosts(this.currentSkip, 50);
+  }
+
+  private async loadFakePosts(skip: number, limit: number): Promise<void> {
+    if (skip >= this.maxSkip) {
+      this.hasMorePosts.set(false);
+      return;
+    }
+
+    this.loadingPosts.set(true);
+    try {
+      const response = await fetch(`https://dummyjson.com/posts?limit=${limit}&skip=${skip}`);
+      const data = await response.json();
+
+      const newPosts: Post[] = data.posts
+        .map((fakePost: any) => {
+          const mappedUser = this.userMap.get(fakePost.userId);
+          if (!mappedUser) return null;
+
+          return {
+            id: `dummy_${fakePost.id}`,
+            author: mappedUser.name,
+            authorImage: mappedUser.image,
+            content: fakePost.body,
+            timestamp: new Date(),
+            likes: fakePost.reactions?.likes || Math.floor(Math.random() * 100),
+            comments: 0,
+            liked: false,
+            image: `https://picsum.photos/seed/${fakePost.id}/500/300`,
+            postComments: []
+          };
+        })
+        .filter((post: any): post is Post => post !== null && !post.author.startsWith('User '));
+
+      const currentPosts = this.posts();
+      const existingIds = new Set(currentPosts.map(p => p.id));
+      const uniqueNewPosts = newPosts.filter(p => !existingIds.has(p.id));
+
+      if (uniqueNewPosts.length > 0) {
+        this.posts.set([...currentPosts, ...uniqueNewPosts]);
+      }
+
+      this.currentSkip += limit;
+      if (this.currentSkip >= this.maxSkip || this.currentSkip >= data.total) {
+        this.hasMorePosts.set(false);
+      }
+    } catch (error) {
+      console.error('Failed to load fake posts:', error);
+    } finally {
+      this.loadingPosts.set(false);
+    }
   }
 
   addPost(content: string, imageFile?: File): void {
     // Get current user name - fallback to 'John Doe' if not available
-    const userName = typeof window !== 'undefined' && localStorage.getItem('connectify_user') 
-      ? JSON.parse(localStorage.getItem('connectify_user')!).name 
+    const userName = typeof window !== 'undefined' && localStorage.getItem('connectify_user')
+      ? JSON.parse(localStorage.getItem('connectify_user')!).name
       : 'John Doe';
-    
+
     const newPost: Post = {
       id: Date.now().toString(),
       author: userName,
@@ -137,9 +181,13 @@ export class PostService {
     }
   }
 
+  private savePosts(): void {
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.posts().filter(p => !p.id.startsWith('dummy_'))));
+  }
+
   updatePost(postId: string, updates: Partial<Post>): void {
     const currentPosts = this.posts();
-    const updatedPosts = currentPosts.map(post => 
+    const updatedPosts = currentPosts.map(post =>
       post.id === postId ? { ...post, ...updates } : post
     );
     this.posts.set(updatedPosts);
@@ -169,10 +217,10 @@ export class PostService {
   }
 
   addComment(postId: string, text: string): void {
-    const userName = typeof window !== 'undefined' && localStorage.getItem('connectify_user') 
-      ? JSON.parse(localStorage.getItem('connectify_user')!).name 
+    const userName = typeof window !== 'undefined' && localStorage.getItem('connectify_user')
+      ? JSON.parse(localStorage.getItem('connectify_user')!).name
       : 'John Doe';
-    
+
     const newComment: Comment = {
       id: Date.now().toString(),
       author: userName,
@@ -193,10 +241,10 @@ export class PostService {
   }
 
   addReply(postId: string, commentId: string, text: string): void {
-    const userName = typeof window !== 'undefined' && localStorage.getItem('connectify_user') 
-      ? JSON.parse(localStorage.getItem('connectify_user')!).name 
+    const userName = typeof window !== 'undefined' && localStorage.getItem('connectify_user')
+      ? JSON.parse(localStorage.getItem('connectify_user')!).name
       : 'John Doe';
-    
+
     const newReply: Comment = {
       id: Date.now().toString(),
       author: userName,
@@ -272,10 +320,10 @@ export class PostService {
   }
 
   refreshUserPosts(): void {
-    const currentUser = typeof window !== 'undefined' && localStorage.getItem('connectify_user') 
-      ? JSON.parse(localStorage.getItem('connectify_user')!) 
+    const currentUser = typeof window !== 'undefined' && localStorage.getItem('connectify_user')
+      ? JSON.parse(localStorage.getItem('connectify_user')!)
       : null;
-    
+
     if (currentUser) {
       const currentPosts = this.posts();
       const updatedPosts = currentPosts.map(post => {

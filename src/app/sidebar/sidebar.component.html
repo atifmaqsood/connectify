@@ -1,57 +1,76 @@
-<div class="sidebar-container">
-  <!-- Quick Actions Card -->
-  <mat-card class="sidebar-card">
-    <mat-card-header>
-      <mat-card-title class="card-title">Quick Actions</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      @for (action of quickActions(); track action.action) {
-        <button mat-button class="action-item">
-          <mat-icon>{{ action.icon }}</mat-icon>
-          <span>{{ action.label }}</span>
-        </button>
-      }
-    </mat-card-content>
-  </mat-card>
+<div class="sidebar-container" [class.right-mode]="type === 'right'">
+  <!-- LEFT SIDEBAR CONTENT -->
+  @if (type === 'left') {
+  <div class="left-sidebar-wrapper">
+    @for (action of leftActions(); track action.label) {
+    <button mat-button class="action-item">
+      <mat-icon [style.color]="action.color">{{ action.icon }}</mat-icon>
+      <span class="action-label">{{ action.label }}</span>
+    </button>
+    }
 
-  <!-- Online Colleagues Card -->
-  <mat-card class="sidebar-card">
-    <mat-card-header>
-      <mat-card-title class="card-title">Online Colleagues</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
+    <mat-divider class="section-divider"></mat-divider>
+
+    <div class="shortcuts-section">
+      <h3 class="section-title">Your Shortcuts</h3>
+      <div class="shortcut-item">
+        <mat-icon class="shortcut-icon" style="color: #42b883">groups</mat-icon>
+        <span class="shortcut-label">NKU Developers</span>
+      </div>
+      <div class="shortcut-item">
+        <mat-icon class="shortcut-icon" style="color: #ff9800">sports_esports</mat-icon>
+        <span class="shortcut-label">Connectify Gaming</span>
+      </div>
+    </div>
+  </div>
+  }
+
+  <!-- RIGHT SIDEBAR CONTENT -->
+  @if (type === 'right') {
+  <div class="right-sidebar-wrapper">
+    <div class="sponsored-section">
+      <h3 class="section-title">Sponsored</h3>
+      @for (ad of rightSponsored(); track ad.title) {
+      <div class="ad-item">
+        <img [src]="ad.image" [alt]="ad.title">
+        <div class="ad-info">
+          <span class="ad-title">{{ ad.title }}</span>
+          <span class="ad-link">{{ ad.link }}</span>
+        </div>
+      </div>
+      }
+    </div>
+
+    <mat-divider class="section-divider"></mat-divider>
+
+    <div class="birthdays-section">
+      <h3 class="section-title">Birthdays</h3>
+      <div class="birthday-item">
+        <mat-icon style="color: #f35e59">cake</mat-icon>
+        <span class="birthday-text"><b>Alice Smith</b> has a birthday today.</span>
+      </div>
+    </div>
+
+    <mat-divider class="section-divider"></mat-divider>
+
+    <div class="contacts-section">
+      <div class="contacts-header">
+        <h3 class="section-title">Contacts</h3>
+        <div class="contacts-actions">
+          <mat-icon>search</mat-icon>
+          <mat-icon>more_horiz</mat-icon>
+        </div>
+      </div>
       @for (colleague of onlineColleagues(); track colleague.id) {
-        <div class="colleague-item">
+      <div class="colleague-item">
+        <div class="avatar-wrapper">
           <mat-icon class="colleague-avatar">account_circle</mat-icon>
-          <span class="colleague-name">{{ colleague.name }}</span>
           <div class="online-indicator"></div>
         </div>
+        <span class="colleague-name">{{ colleague.name }}</span>
+      </div>
       }
-    </mat-card-content>
-  </mat-card>
-
-  <!-- Trending Topics Card -->
-  <mat-card class="sidebar-card">
-    <mat-card-header>
-      <mat-card-title class="card-title">Trending Topics</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="trending-item">
-        <span class="trending-tag">#TechInnovation</span>
-        <span class="trending-count">245 posts</span>
-      </div>
-      <div class="trending-item">
-        <span class="trending-tag">#TeamWork</span>
-        <span class="trending-count">189 posts</span>
-      </div>
-      <div class="trending-item">
-        <span class="trending-tag">#NKUTech</span>
-        <span class="trending-count">156 posts</span>
-      </div>
-      <div class="trending-item">
-        <span class="trending-tag">#ProjectUpdate</span>
-        <span class="trending-count">98 posts</span>
-      </div>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </div>
+  }
 </div>

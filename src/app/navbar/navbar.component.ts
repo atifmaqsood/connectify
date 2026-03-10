@@ -9,6 +9,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { AuthService } from '../auth.service';
+import { ThemeService } from '../services/theme.service';
 
 @Component({
   selector: 'app-navbar',
@@ -32,8 +33,9 @@ export class NavbarComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
-  ) {}
+    private router: Router,
+    public themeService: ThemeService
+  ) { }
 
   toggleSearch(): void {
     this.isSearchActive.set(!this.isSearchActive());

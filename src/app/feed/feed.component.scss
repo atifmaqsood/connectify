@@ -5,218 +5,259 @@
 
 ::ng-deep .mat-mdc-dialog-surface {
   overflow-x: hidden;
+  background: var(--surface-color) !important;
 }
 
 .create-post-card {
   margin-bottom: 16px;
-  
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  background: var(--surface-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
   @media (max-width: 768px) {
     margin-bottom: 8px;
     border-radius: 0;
     box-shadow: none;
-    border-bottom: 8px solid #f0f2f5;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
   }
-  
+
   .create-post-input {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 12px 0;
+    padding: 8px 0;
     cursor: pointer;
-    
-    .user-avatar-container {
-      width: 40px;
-      height: 40px;
-    }
-    
+
     .user-avatar-img {
       width: 40px;
       height: 40px;
       border-radius: 50%;
       object-fit: cover;
     }
-    
+
     .post-input-placeholder {
       flex: 1;
-      background: #f0f2f5;
+      background: var(--bg-color);
       border-radius: 20px;
-      padding: 12px 16px;
-      color: #65676b;
-      cursor: pointer;
-      
+      padding: 10px 16px;
+      color: var(--text-secondary);
+      font-size: 17px;
+      transition: all 0.2s;
+
       &:hover {
-        background: #e4e6ea;
+        background: var(--hover-color);
       }
     }
   }
-  
+
+  mat-divider {
+    border-top-color: var(--divider-color);
+  }
+
   .create-post-actions {
     display: flex;
     justify-content: space-around;
     padding-top: 8px;
-    
+
     .action-btn {
+      flex: 1;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
-      color: #65676b;
-      
+      color: var(--text-secondary);
+      font-weight: 600;
+      border-radius: 8px;
+      transition: all 0.2s;
+
       mat-icon {
-        color: #42a5f5;
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+
+        &.photo {
+          color: #45bd62;
+        }
+
+        &.feeling {
+          color: #f7b928;
+        }
+      }
+
+      &:hover {
+        background: var(--hover-color);
+        color: var(--text-primary);
       }
     }
   }
 }
 
-.posts-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  
-  @media (max-width: 768px) {
-    gap: 0;
-  }
-}
-
 .post-card {
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  background: var(--surface-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
   @media (max-width: 768px) {
     border-radius: 0;
     box-shadow: none;
-    border-bottom: 8px solid #f0f2f5;
+    border-bottom: 8px solid var(--bg-color);
     margin-bottom: 0;
   }
-  
-  .post-avatar {
-    font-size: 40px;
-    width: 40px;
-    height: 40px;
-    color: #1976d2;
-  }
-  
+
   .post-author-avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
   }
-  
+
   .post-menu-btn {
     position: absolute;
     top: 8px;
     right: 8px;
-    color: #65676b;
-    
+    color: var(--text-secondary);
+
     &:hover {
-      background-color: #f0f2f5;
+      background-color: var(--hover-color);
     }
   }
-  
+
   mat-card-header {
     position: relative;
+    padding-bottom: 8px;
   }
-  
+
   .post-author {
     font-size: 15px;
     font-weight: 600;
-    color: #050505;
+    color: var(--text-primary);
     padding-right: 40px;
+
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
   }
-  
+
   .post-time {
     font-size: 13px;
-    color: #65676b;
+    color: var(--text-secondary);
   }
-  
+
   .post-content {
-    margin: 0;
-    line-height: 1.33;
-    color: #050505;
+    margin: 4px 0 12px 0;
+    line-height: 1.5;
+    color: var(--text-primary);
+    font-size: 15px;
   }
-  
+
   .post-image {
-    width: 100%;
-    max-height: 350px;
+    width: calc(100% + 32px);
+    margin-left: -16px;
+    max-height: 500px;
     object-fit: cover;
-    border-radius: 8px;
-    margin: 12px 0 16px 0;
     cursor: pointer;
-    
+    transition: filter 0.2s;
+
     &:hover {
-      opacity: 0.95;
+      filter: brightness(0.9);
     }
   }
 }
 
 .post-footer {
   padding: 0;
-  
+
   .action-stats {
     display: flex;
     justify-content: space-between;
     padding: 8px 16px 4px 16px;
     font-size: 13px;
-    color: #65676b;
+    color: var(--text-secondary);
     min-height: 20px;
-    
+
     .likes-count,
     .comments-count {
       cursor: pointer;
-      
+
       &:hover {
         text-decoration: underline;
       }
     }
   }
-  
+
   mat-divider {
-    margin: 8px 0;
+    border-top-color: var(--divider-color);
   }
-  
+
   .action-buttons {
     display: flex;
     padding: 0;
-    
+
     .action-button {
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      color: #65676b;
+      color: var(--text-secondary);
       border-radius: 6px;
       min-height: 40px;
       margin: 0;
-      
+      transition: all 0.2s;
+
       &:hover {
-        background: #f0f2f5;
+        background: var(--hover-color);
+        color: var(--text-primary);
       }
-      
+
       &.liked {
-        color: #1877f2;
-        
+        color: var(--accent-color);
+
         mat-icon {
-          color: #1877f2;
+          color: var(--accent-color);
         }
       }
-      
-      &:disabled {
-        opacity: 0.7;
-        cursor: not-allowed;
-      }
     }
+  }
+}
+
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  padding: 16px 0 40px 0;
+
+  .load-more-btn {
+    width: 100%;
+    max-width: 400px;
+    height: 44px;
+    font-weight: 600;
+    font-size: 15px;
+    background-color: var(--accent-color) !important;
   }
 }
 
 .btn-spinner {
   width: 16px;
   height: 16px;
-  border: 2px solid rgba(101, 103, 107, 0.3);
-  border-top: 2px solid #65676b;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
   border-radius: 50%;
   animation: spin 1s linear infinite;
+  margin-right: 8px;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }

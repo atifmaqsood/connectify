@@ -11,11 +11,11 @@
       <mat-divider></mat-divider>
       <div class="create-post-actions">
         <button mat-button class="action-btn" (click)="openCreatePost()">
-          <mat-icon>photo_camera</mat-icon>
+          <mat-icon class="photo">photo_camera</mat-icon>
           Photo/Video
         </button>
         <button mat-button class="action-btn" (click)="openCreatePost()">
-          <mat-icon>sentiment_satisfied</mat-icon>
+          <mat-icon class="feeling">sentiment_satisfied</mat-icon>
           Feeling/Activity
         </button>
       </div>
@@ -25,63 +25,76 @@
   <!-- Posts Feed -->
   <div class="posts-container">
     @for (post of posts(); track post.id) {
-      <mat-card class="post-card">
-        <mat-card-header>
-          @if (post.author === user().name) {
-            <img mat-card-avatar [src]="user().profilePhoto" class="post-author-avatar" alt="Profile">
-          } @else {
-            <mat-icon mat-card-avatar class="post-avatar">account_circle</mat-icon>
-          }
-          <mat-card-title class="post-author">{{ post.author }}</mat-card-title>
-          <mat-card-subtitle class="post-time">{{ post.timestamp | date:'short' }}</mat-card-subtitle>
-          <button mat-icon-button [matMenuTriggerFor]="postMenu" class="post-menu-btn">
-            <mat-icon>more_horiz</mat-icon>
+    <mat-card class="post-card">
+      <mat-card-header>
+        @if (post.author === user().name) {
+        <img mat-card-avatar [src]="user().profilePhoto" class="post-author-avatar" alt="Profile">
+        } @else if (post.authorImage) {
+        <img mat-card-avatar [src]="post.authorImage" class="post-author-avatar" alt="Profile">
+        } @else {
+        <mat-icon mat-card-avatar class="post-avatar">account_circle</mat-icon>
+        }
+        <mat-card-title class="post-author">{{ post.author }}</mat-card-title>
+        <mat-card-subtitle class="post-time">{{ post.timestamp | date:'short' }}</mat-card-subtitle>
+        <button mat-icon-button [matMenuTriggerFor]="postMenu" class="post-menu-btn">
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+        <mat-menu #postMenu="matMenu">
+          <button mat-menu-item (click)="editPost(post)">
+            <mat-icon>edit</mat-icon>
+            <span>Edit Post</span>
           </button>
-          <mat-menu #postMenu="matMenu">
-            <button mat-menu-item (click)="editPost(post)">
-              <mat-icon>edit</mat-icon>
-              <span>Edit Post</span>
-            </button>
-            <button mat-menu-item (click)="deletePost(post)">
-              <mat-icon>delete</mat-icon>
-              <span>Delete Post</span>
-            </button>
-          </mat-menu>
-        </mat-card-header>
-        
-        <mat-card-content>
-          <p class="post-content">{{ post.content }}</p>
-          @if (post.image) {
-            <img [src]="post.image" alt="Post image" class="post-image" (click)="openComments(post)">
-          }
-        </mat-card-content>
-        
-        <div class="post-footer">
-          <div class="action-stats">
-            <span class="likes-count" (click)="openComments(post)">{{ post.likes }} likes</span>
-            <span class="comments-count" (click)="openComments(post)">{{ post.comments }} comments</span>
-          </div>
-          <mat-divider></mat-divider>
-          <div class="action-buttons">
-            <button mat-button 
-                    [class.liked]="post.liked" 
-                    (click)="toggleLike(post)"
-                    [disabled]="loadingPosts().has(post.id)"
-                    class="action-button">
-              @if (loadingPosts().has(post.id)) {
-                <div class="btn-spinner"></div>
-              } @else {
-                <mat-icon>{{ post.liked ? 'thumb_up' : 'thumb_up_off_alt' }}</mat-icon>
-              }
-              Like
-            </button>
-            <button mat-button (click)="openComments(post)" class="action-button">
-              <mat-icon>comment</mat-icon>
-              Comment
-            </button>
-          </div>
+          <button mat-menu-item (click)="deletePost(post)">
+            <mat-icon>delete</mat-icon>
+            <span>Delete Post</span>
+          </button>
+        </mat-menu>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p class="post-content">{{ post.content }}</p>
+        @if (post.image) {
+        <img [src]="post.image" alt="Post image" class="post-image" (click)="openComments(post)">
+        }
+      </mat-card-content>
+
+      <div class="post-footer">
+        <div class="action-stats">
+          <span class="likes-count" (click)="openComments(post)">{{ post.likes }} likes</span>
+          <span class="comments-count" (click)="openComments(post)">{{ post.comments }} comments</span>
         </div>
-      </mat-card>
+        <mat-divider></mat-divider>
+        <div class="action-buttons">
+          <button mat-button [class.liked]="post.liked" (click)="toggleLike(post)"
+            [disabled]="loadingLikes().has(post.id)" class="action-button">
+            @if (loadingLikes().has(post.id)) {
+            <div class="btn-spinner"></div>
+            } @else {
+            <mat-icon>{{ post.liked ? 'thumb_up' : 'thumb_up_off_alt' }}</mat-icon>
+            }
+            Like
+          </button>
+          <button mat-button (click)="openComments(post)" class="action-button">
+            <mat-icon>comment</mat-icon>
+            Comment
+          </button>
+        </div>
+      </div>
+    </mat-card>
+    }
+
+    <!-- Load More -->
+    @if (hasMorePosts()) {
+    <div class="load-more-container">
+      <button mat-flat-button color="primary" class="load-more-btn" (click)="loadMore()" [disabled]="loadingMore()">
+        @if (loadingMore()) {
+        <div class="btn-spinner white"></div>
+        Loading...
+        } @else {
+        Load More
+        }
+      </button>
+    </div>
     }
   </div>
 </div>

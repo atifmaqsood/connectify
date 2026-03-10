@@ -1,0 +1,17 @@
+<div class="groups-container">
+    <div class="header">
+        <h2>Groups</h2>
+    </div>
+    <div class="groups-list">
+        <mat-card class="group-card" *ngFor="let i of [1,2,3,4]">
+            <img mat-card-image [src]="'https://picsum.photos/seed/group'+i+'/600/200'" alt="Group banner">
+            <mat-card-header>
+                <mat-card-title>Community Group {{ i }}</mat-card-title>
+                <mat-card-subtitle>{{ i * 15 }}K members • 5 posts a day</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-actions>
+                <button mat-flat-button color="primary">Join Group</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>

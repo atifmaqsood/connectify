@@ -3,24 +3,29 @@
   max-width: 700px;
   min-width: min(700px, 90vw);
   padding: 0;
-  
+  background: var(--surface-color);
+  color: var(--text-primary);
+
   @media (max-width: 768px) {
     min-width: 95vw;
     max-width: 95vw;
   }
 }
-::ng-deep   .mat-mdc-dialog-surface{
-overflow-x: hidden;  }
+
+::ng-deep .mat-mdc-dialog-surface {
+  overflow-x: hidden;
+  background: var(--surface-color) !important;
+}
+
 :host ::ng-deep .mat-mdc-dialog-container {
   width: 100%;
   max-width: 700px;
   min-width: min(700px, 90vw);
-  
+
   @media (max-width: 768px) {
     min-width: 95vw;
     max-width: 95vw;
   }
-
 }
 
 .dialog-header {
@@ -28,13 +33,14 @@ overflow-x: hidden;  }
   justify-content: space-between;
   align-items: center;
   padding: 16px 20px;
-  border-bottom: 1px solid #e4e6ea;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .dialog-header h2 {
   margin: 0;
   font-size: 20px;
   font-weight: 700;
+  color: var(--text-primary);
 }
 
 .user-info {
@@ -48,7 +54,7 @@ overflow-x: hidden;  }
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #1877f2;
+  background: var(--accent-color);
   color: white;
   display: flex;
   align-items: center;
@@ -71,11 +77,12 @@ overflow-x: hidden;  }
 .name {
   font-weight: 600;
   font-size: 15px;
+  color: var(--text-primary);
 }
 
 .visibility {
   font-size: 13px;
-  color: #65676b;
+  color: var(--text-secondary);
 }
 
 .post-textarea {
@@ -88,15 +95,16 @@ overflow-x: hidden;  }
   resize: none;
   padding: 0 20px;
   background: transparent;
+  color: var(--text-primary);
 }
 
 .post-textarea::placeholder {
-  color: #65676b;
+  color: var(--text-secondary);
 }
 
 .media-options {
   padding: 16px 20px;
-  border-top: 1px solid #e4e6ea;
+  border-top: 1px solid var(--border-color);
   display: flex;
   gap: 8px;
 }
@@ -105,11 +113,16 @@ overflow-x: hidden;  }
   flex: 1;
   justify-content: flex-start;
   gap: 8px;
+  color: var(--text-secondary);
+
+  &:hover {
+    background-color: var(--hover-color);
+  }
 }
 
 .dialog-actions {
   padding: 16px 20px;
-  border-top: 1px solid #e4e6ea;
+  border-top: 1px solid var(--border-color);
 }
 
 .post-btn {
@@ -117,6 +130,8 @@ overflow-x: hidden;  }
   height: 36px;
   border-radius: 6px;
   font-weight: 600;
+  background-color: var(--accent-color) !important;
+  color: white !important;
 }
 
 .image-preview {
@@ -135,7 +150,7 @@ overflow-x: hidden;  }
   position: absolute;
   top: 8px;
   right: 8px;
-  background: rgba(0,0,0,0.6) !important;
+  background: rgba(0, 0, 0, 0.6) !important;
   color: white !important;
 }
 
@@ -148,28 +163,39 @@ overflow-x: hidden;  }
 .btn-spinner {
   width: 16px;
   height: 16px;
-  border: 2px solid rgba(255,255,255,0.3);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-top: 2px solid white;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 ::ng-deep .feeling-menu {
   .mat-mdc-menu-content {
     padding: 8px 0;
+    background: var(--surface-color);
   }
-  
+
   .mat-mdc-menu-item {
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 8px 16px;
-    
+    color: var(--text-primary);
+
+    &:hover {
+      background-color: var(--hover-color);
+    }
+
     .feeling-emoji {
       font-size: 18px;
     }

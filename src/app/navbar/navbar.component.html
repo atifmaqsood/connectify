@@ -2,57 +2,64 @@
   <div class="navbar-content">
     <!-- Normal Navbar -->
     @if (!isSearchActive()) {
-      <div class="navbar-left">
-        <!-- <button mat-icon-button class="mobile-menu-btn" [matMenuTriggerFor]="mobileMenu">
+    <div class="navbar-left">
+      <!-- <button mat-icon-button class="mobile-menu-btn" [matMenuTriggerFor]="mobileMenu">
           <mat-icon>menu</mat-icon>
         </button> -->
-        <h1 class="logo" routerLink="/dashboard">NKUverse</h1>
-      </div>
-      
-      <!-- <div class="navbar-center">
-        <button mat-icon-button class="nav-icon active">
-          <mat-icon>home</mat-icon>
-        </button>
-        <button mat-icon-button class="nav-icon">
-          <mat-icon matBadge="3" matBadgeColor="warn">people</mat-icon>
-        </button>
-        <button mat-icon-button class="nav-icon">
-          <mat-icon matBadge="5" matBadgeColor="warn">message</mat-icon>
-        </button>
-        <button mat-icon-button class="nav-icon">
-          <mat-icon matBadge="2" matBadgeColor="warn">notifications</mat-icon>
-        </button>
-      </div> -->
-      
-      <div class="navbar-right">
-        <button mat-icon-button class="search-btn" (click)="toggleSearch()">
-          <mat-icon>search</mat-icon>
-        </button>
-        <!-- <button mat-icon-button class="mobile-notifications">
+      <h1 class="logo" routerLink="/dashboard">Connectify</h1>
+    </div>
+
+    <div class="navbar-center">
+      <button mat-icon-button class="nav-icon" routerLink="/dashboard" routerLinkActive="active" title="Home">
+        <mat-icon>home</mat-icon>
+      </button>
+      <button mat-icon-button class="nav-icon" routerLink="/videos" routerLinkActive="active" title="Videos">
+        <mat-icon>ondemand_video</mat-icon>
+      </button>
+      <button mat-icon-button class="nav-icon" routerLink="/marketplace" routerLinkActive="active" title="Marketplace">
+        <mat-icon>storefront</mat-icon>
+      </button>
+      <button mat-icon-button class="nav-icon" routerLink="/groups" routerLinkActive="active" title="Groups">
+        <mat-icon>groups</mat-icon>
+      </button>
+      <button mat-icon-button class="nav-icon" routerLink="/gaming" routerLinkActive="active" title="Gaming">
+        <mat-icon>sports_esports</mat-icon>
+      </button>
+    </div>
+
+    <div class="navbar-right">
+      <button mat-icon-button class="theme-btn" (click)="themeService.toggleTheme()"
+        [title]="themeService.theme() === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'">
+        <mat-icon>{{ themeService.theme() === 'light' ? 'dark_mode' : 'light_mode' }}</mat-icon>
+      </button>
+      <button mat-icon-button class="search-btn" (click)="toggleSearch()">
+        <mat-icon>search</mat-icon>
+      </button>
+      <!-- <button mat-icon-button class="mobile-notifications">
           <mat-icon matBadge="10" matBadgeColor="warn">notifications</mat-icon>
         </button>
         <button mat-icon-button class="mobile-messages">
           <mat-icon matBadge="5" matBadgeColor="warn">message</mat-icon>
         </button> -->
-        <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-menu">
-          <mat-icon>account_circle</mat-icon>
-        </button>
-      </div>
+      <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-menu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+    </div>
     }
-    
+
     <!-- Search Mode -->
     @if (isSearchActive()) {
-      <div class="search-mode">
-        <button mat-icon-button (click)="closeSearch()" class="back-btn">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-        <div class="search-input-container">
-          <mat-icon class="search-icon">search</mat-icon>
-          <input class="search-input" placeholder="Search NKUverse" autofocus>
-        </div>
+    <div class="search-mode">
+      <button mat-icon-button (click)="closeSearch()" class="back-btn">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="search-input-container">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input class="search-input" placeholder="Search NKUverse" autofocus>
       </div>
+    </div>
     }
-    
+
     <!-- Menus -->
     <mat-menu #userMenu="matMenu">
       <button mat-menu-item routerLink="/profile">
@@ -69,7 +76,7 @@
         <span>Logout</span>
       </button>
     </mat-menu>
-    
+
     <!-- <mat-menu #mobileMenu="matMenu">
       <button mat-menu-item routerLink="/dashboard">
         <mat-icon>home</mat-icon>

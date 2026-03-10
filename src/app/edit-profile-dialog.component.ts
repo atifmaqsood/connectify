@@ -80,6 +80,8 @@ import { User } from './services/user.service';
       max-width: 700px;
       min-width: min(700px, 90vw);
       padding: 0;
+      background: var(--surface-color);
+      color: var(--text-primary);
       
       @media (max-width: 768px) {
         min-width: 95vw;
@@ -92,12 +94,17 @@ import { User } from './services/user.service';
       justify-content: space-between;
       align-items: center;
       padding: 16px 20px;
-      border-bottom: 1px solid #e0e0e0;
+      border-bottom: 1px solid var(--border-color);
       
       h2 {
         margin: 0;
         font-size: 20px;
         font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      button {
+        color: var(--text-secondary);
       }
     }
     
@@ -110,10 +117,14 @@ import { User } from './services/user.service';
     
     .dialog-actions {
       padding: 16px 20px;
-      border-top: 1px solid #e0e0e0;
+      border-top: 1px solid var(--border-color);
       display: flex;
       justify-content: flex-end;
       gap: 8px;
+
+      button[mat-button] {
+        color: var(--text-secondary);
+      }
     }
   `]
 })
